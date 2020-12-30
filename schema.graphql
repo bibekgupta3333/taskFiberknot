@@ -1,0 +1,13 @@
+type Query {
+  item(id: ID!): Item
+  items: [Item]
+}
+
+type Item {
+  id: ID!
+  name: String
+  slug: String
+  description: String
+  features: [String]
+  rating: Int
+}

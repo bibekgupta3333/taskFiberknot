@@ -1,3 +1,5 @@
+const fs = require('fs');
+const { ApolloServer, gql } = require('apollo-server-express');
 const express = require('express');
 const dotenv = require('dotenv');
 const morgan = require('morgan'); //helps in logging
@@ -28,6 +30,12 @@ if (process.env.NODE_ENV === 'development') {
 app.use('/api/v1/items', items);
 
 app.use(errorHandler);
+
+// graphql support
+const typeDefs = gql(fs.readFileSync('./schema.graphql', { encoding: 'utf8' }));
+const resolvers = require('./resolvers');
+const apolloServer = new ApolloServer({ typeDefs, resolvers });
+apolloServer.applyMiddleware({ app, path: '/graphql' });
 
 const PORT = process.env.PORT || 5000;
 
